@@ -29,3 +29,20 @@ To run the repository locally, follow the following steps.
 
 ### Step 5 - Open the generated link in the browser.
     http://127.0.0.1:5000
+
+---
+
+## 🔐 Dashboard Login Credentials
+
+Use the following credentials to access the dashboards.
+
+| Role | Username | Password |
+|------|----------|----------|
+| 🧑‍💻 Admin | admin | admin123 |
+| 👤 User  |  user |   123    |
+| 🚛 Driver | driver1 | 123 |
+| 🚛 Driver | driver2 | 123 |
+| 🚛 Driver | driver3 | 123 |
+
+
+---
