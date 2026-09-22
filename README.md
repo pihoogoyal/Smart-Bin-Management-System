@@ -28,7 +28,7 @@ To run the repository locally, follow the following steps.
     python app.py
 
 ### Step 5 - Open the generated link in the browser.
-    http://127.0.0.1:5000
+    http://127.0.0.1:5001
 
 ---
 
