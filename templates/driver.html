@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Panel</title>
+    <style>
+        /* Modern Color Palette & Variables */
+        :root {
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --success: #10b981;
+            --success-hover: #059669;
+            --secondary: #f1f5f9;
+            --secondary-hover: #e2e8f0;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        /* Reset & Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.5;
+        }
+
+        /* Navigation Bar */
+        .nav {
+            background-color: #0f172a;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav h2 { 
+            font-size: 1.25rem; 
+            font-weight: 600; 
+        }
+
+        .nav a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav a:hover { 
+            color: white; 
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Summary Stats Grid */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .summary-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .summary-card h4 { 
+            color: var(--text-muted); 
+            font-size: 0.875rem; 
+            text-transform: uppercase; 
+            letter-spacing: 0.05em; 
+            margin-bottom: 0.5rem; 
+        }
+
+        .summary-card p { 
+            font-size: 2rem; 
+            font-weight: 700; 
+            color: var(--primary); 
+        }
+
+        /* General Card Layout */
+        .card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid var(--border);
+        }
+
+        .section-header {
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        /* Controls Panel (Sort & Search) */
+        .controls-panel {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            background: var(--card-bg);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .view-toggles {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 0.75rem;
+            flex: 1;
+            max-width: 400px;
+        }
+
+        input {
+            flex: 1;
+            padding: 0.625rem 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        /* Buttons & Links acting as Buttons */
+        .btn, button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.625rem 1.25rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .default { background: var(--secondary); color: var(--text-main); }
+        .default:hover { background: var(--secondary-hover); }
+
+        .primary { background: var(--primary); color: white; }
+        .primary:hover { background: var(--primary-hover); transform: translateY(-1px); }
+        
+        .success { background: var(--success); color: white; width: 100%; margin-top: 1rem; }
+        .success:hover { background: var(--success-hover); transform: translateY(-1px); }
+
+        /* Tasks Grid */
+        .tasks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .task-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .task-title { 
+            font-size: 1.125rem; 
+            font-weight: 600; 
+            margin-bottom: 0.75rem;
+            color: var(--text-main);
+        }
+
+        .task-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .badge {
+            background: #f1f5f9;
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #475569;
+            border: 1px solid var(--border);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .controls-panel {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .search-form {
+                max-width: 100%;
+            }
+            .view-toggles {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="nav">
+        <h2>Driver Panel</h2>
+        <a href="/logout">Logout</a>
+    </nav>
+
+    <div class="container">
+
+        <div style="margin-bottom:16px;">
+            <h2 style="margin:0;">
+                Driver #{{ driver_id }}
+            </h2>
+        </div>
+
+        <div class="summary-grid">
+            <div class="summary-card">
+                <h4>Pending Tasks</h4>
+                <p>{{ pending }}</p>
+            </div>
+            <div class="summary-card">
+                <h4>Completed</h4>
+                <p>{{ done }}</p>
+            </div>
+        </div>
+
+        <div class="controls-panel">
+            <div class="view-toggles">
+                <a href="/driver/{{ driver_id }}" 
+                class="btn {{ 'primary' if not request.args.get('sort') else 'default' }}">
+                Default View
+                </a>
+
+                <a href="/driver/{{ driver_id }}?sort=status" 
+                class="btn {{ 'primary' if request.args.get('sort') == 'status' else 'default' }}">
+                Pending First
+                </a>
+            </div>
+
+            <form method="GET" action="/driver/{{ driver_id }}" class="search-form">
+                <input name="search" placeholder="Search bin location..." value="{{ request.args.get('search','') }}">
+                <button type="submit" class="btn primary">Search</button>
+            </form>
+        </div>
+
+        <h3 class="section-header">Your Tasks</h3>
+        
+        <div class="tasks-grid">
+            {% for t in tasks %}
+            <div class="card task-card">
+                <div>
+                    <div class="task-title">{{ t[1] }}</div>
+                    
+                    <div class="task-details">
+                        <span class="badge">Fill: <strong>{{ t[2] }}%</strong></span>
+                        <span class="badge">Bin: {{ t[3] }}</span>
+                        <span class="badge">Status: {{ t[4] }}</span>
+                    </div>
+                </div>
+
+                {% if t[4] != 'DONE' %}
+                <a href="/collect/{{ t[0] }}" class="btn success">Mark Done</a>
+                {% endif %}
+            </div>
+            {% endfor %}
+            
+            {% if tasks|length == 0 %}
+            <div class="card" style="grid-column: 1 / -1; text-align: center; color: var(--text-muted);">
+                No tasks found.
+            </div>
+            {% endif %}
+        </div>
+
+    </div>
+
+</body>
+</html>

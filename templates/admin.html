@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        /* Modern Color Palette & Variables */
+        :root {
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --success: #10b981;
+            --success-hover: #059669;
+            --secondary: #f1f5f9;
+            --secondary-hover: #e2e8f0;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        /* Reset & Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.5;
+        }
+
+        /* Navigation Bar */
+        .nav {
+            background-color: #0f172a;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav h1 { 
+            font-size: 1.25rem; 
+            font-weight: 600; 
+            margin: 0;
+        }
+
+        .nav a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav a:hover { 
+            color: white; 
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Summary Stats Grid */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .summary-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .summary-card h4 { 
+            color: var(--text-muted); 
+            font-size: 0.875rem; 
+            text-transform: uppercase; 
+            letter-spacing: 0.05em; 
+            margin-bottom: 0.5rem; 
+        }
+
+        .summary-card p { 
+            font-size: 2rem; 
+            font-weight: 700; 
+            color: var(--primary); 
+            margin: 0;
+        }
+
+        /* Control Panels (Forms & Buttons) */
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid var(--border);
+        }
+
+        .section-header {
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+        
+        .small-header {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+
+        /* Buttons & Forms */
+        .form-group {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .form-group-vertical {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        input, select {
+            flex: 1;
+            min-width: 200px;
+            padding: 0.625rem 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.2s;
+            color: var(--text-main);
+            background: #fff;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .btn, button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.625rem 1.25rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .default { background: var(--secondary); color: var(--text-main); }
+        .default:hover { background: var(--secondary-hover); }
+
+        .primary { background: var(--primary); color: white; }
+        .primary:hover { background: var(--primary-hover); transform: translateY(-1px); }
+        
+        .success { background: var(--success); color: white; }
+        .success:hover { background: var(--success-hover); transform: translateY(-1px); }
+
+        /* Bin Item Grid */
+        .bins-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .bin-card {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 0;
+        }
+
+        .bin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.75rem;
+        }
+
+        .bin-title { 
+            font-size: 1.125rem; 
+            font-weight: 600; 
+        }
+
+        .bin-stats {
+            display: inline-flex;
+            gap: 1rem;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+            align-items: center;
+        }
+
+        .badge {
+            background: #f1f5f9;
+            padding: 0.25rem 0.6rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #475569;
+            text-transform: uppercase;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .form-group-vertical, .btn-group { 
+                flex-direction: column; 
+                align-items: stretch; 
+                width: 100%;
+            }
+            .btn, button, input { 
+                width: 100%; 
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="nav">
+        <h1>Admin Dashboard</h1>
+        <a href="/logout">Logout</a>
+    </nav>
+
+    <div class="container">
+
+        <div class="summary-grid">
+            <div class="summary-card">
+                <h4>Total Bins</h4>
+                <p>{{ total }}</p>
+            </div>
+            <div class="summary-card">
+                <h4>Full</h4>
+                <p>{{ full }}</p>
+            </div>
+            <div class="summary-card">
+                <h4>Half</h4>
+                <p>{{ half }}</p>
+            </div>
+        </div>
+
+        <div class="card" style="margin: 2rem auto;">
+            <h3 class="small-header">Add New Bin</h3>
+
+            <form method="POST" action="/add_bin" class="form-group">
+                <input name="location" placeholder="Enter bin location..." required>
+                <button type="submit" class="btn primary">Add</button>
+            </form>
+        </div>
+
+        <div class="controls-grid">
+
+            <div class="card">
+                <h3 class="small-header">Quick Sort by Fill Level</h3>
+                <div class="btn-group">
+
+                    <!-- DEFAULT -->
+                    <a href="/admin" 
+                    class="btn {{ 'primary' if request.args.get('sort') in [None, ''] else 'default' }}">
+                    Default View
+                    </a>
+
+                    <!-- ASC -->
+                    <a href="/admin?sort=asc" 
+                    class="btn {{ 'primary' if request.args.get('sort') == 'asc' else 'default' }}">
+                    Ascending ↑
+                    </a>
+
+                    <!-- DESC -->
+                    <a href="/admin?sort=desc" 
+                    class="btn {{ 'primary' if request.args.get('sort') == 'desc' else 'default' }}">
+                    Descending ↓
+                    </a>
+
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3 class="small-header">Search & Filter Directory</h3>
+                <form method="GET" action="/admin" class="form-group">
+
+                    <input 
+                        name="search" 
+                        placeholder="Search bin location..." 
+                        value="{{ request.args.get('search','') }}"
+                    >
+
+                    <!-- optional: keep current sort -->
+                    <input type="hidden" name="sort" value="{{ request.args.get('sort','') }}">
+
+                    <button type="submit" class="btn primary">Search</button>
+
+                </form>
+            </div>
+
+        </div>
+
+        <h2 class="section-header">Manage Bins</h2>
+        <div class="bins-grid">
+            
+            {% for bin in bins %}
+            <div class="card bin-card">
+                <div class="bin-header">
+                    <div>
+                        <div class="bin-title">{{ bin[1] }}</div>
+                        <div class="bin-stats">
+                            <span>Fill Level: <strong>{{ bin[2] }}%</strong></span>
+                            <span class="badge">{{ bin[3] }}</span>
+                        </div>
+
+                        {% if bin[4] %}
+                            <div style="margin-top:6px; color:#64748b; font-size:13px;">
+                                🚛 Assigned: {{ bin[4] }}
+                            </div>
+                        {% else %}
+                            <div style="margin-top:6px; color:#9ca3af; font-size:13px;">
+                                No driver assigned
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <form method="POST" action="/update_bin/{{ bin[0] }}" class="form-group-vertical">
+                    <input name="fill_level" type="number" placeholder="New fill %" required min="0" max="100">
+                    <button type="submit" class="btn success">Update</button>
+                </form>
+
+                <form method="POST" action="/assign/{{ bin[0] }}" class="form-group-vertical">
+                    <select name="driver_id" required>
+                        <option value="" disabled selected>Select a driver...</option>
+                        {% for d in drivers %}
+                        <option value="{{ d[0] }}">{{ d[1] }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn primary">Assign</button>
+                </form>
+            </div>
+            {% endfor %}
+
+        </div>
+        
+    </div>
+
+</body>
+</html>
